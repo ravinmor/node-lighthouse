@@ -13,7 +13,7 @@ export default {
         res.status(200).send(data)
     },
     async connectSergipeHML (req, res) {
-        const data = await homeService.connectSergipeHML(req.body)
+        const data = await homeService.connectSergipe()
         res.status(200).send(data)
     },
 }
