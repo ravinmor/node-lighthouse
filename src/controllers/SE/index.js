@@ -2,13 +2,13 @@ import SEService from "../../services/SE/index.js"
 
 export default {
     async metodo424EnvioDeCreditoDaAula (req, res) {
-        const data = await SEService.metodo424EnvioDeCreditoDaAula({
-            cnhInstrutor: '02360202570',
-            cpfAluno: '88555887534',
-            dataAula: '01012001',
-            horarioInicioAula: '0600',
-            horarioFimAula: '0800',
-        })
+        const pid = process.pid;
+        const reqData = req.body;
+        console.log('>')
+        console.log(`   > Starting SE Connection - Proccess id: ${pid} - Time: ${new Date().toISOString().replace('T', ' ')}`)
+        const data = await SEService.metodo424EnvioDeCreditoDaAula(reqData);
+
+        console.log(`   > Ending SE Connection - Proccess id: ${pid} - Time: ${new Date().toISOString().replace('T', ' ')}`)
         res.status(200).send(data)
     },
     async metodo427CadastraCertificado (req, res) {

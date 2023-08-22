@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default {
     async sendRequestSE(message) {
         const USER = 'DET53011';
@@ -18,27 +20,31 @@ export default {
             </soapenv:Envelope>
         `;
 
-        return await this.sendSOAPRequestSE()
+        return await this.sendSOAPRequestSE(soapRequest)
     },
     async sendSOAPRequestSE(soapRequest) {
-        const url = 'https://ws.transacao.parceiros.services.h-detran.gov-se';
-        const payload = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/soap+xml; charset=utf-8',
-            },
-            body: soapRequest,
-          }
+        return new Promise(async (resolve, reject) => {
+            const url = 'https://ws.transacao.parceiros.services.h-detran.gov-se';
+            const payload = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/soap+xml',
+                },
+                body: soapRequest,
+            }
 
-        try {
-          const response = await fetch(url, payload);
-          
-          const data = await response.text();
-          console.log(data);
-          return data;
-        } catch (error) {
-          console.error(error);
-          return [];
-        }
+            try {
+                const data = await axios.post(url, payload)
+                    .then(resp => resp.data)
+                    .catch(err => {
+                        resolve(err);
+                    });
+
+                resolve(data);
+            } catch (error) {
+                console.error(error);
+                reject([]);
+            }
+        });
     }
 }
